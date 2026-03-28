@@ -28,7 +28,6 @@
     overflow-x: hidden;
   }
 
-  /* Starfield background */
   body::before {
     content: '';
     position: fixed;
@@ -42,6 +41,56 @@
     pointer-events: none;
     z-index: 0;
   }
+
+  /* ---- NAV TABS ---- */
+  .nav-tabs {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(5,13,26,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    padding: 0 20px;
+  }
+
+  .nav-tab {
+    padding: 16px 32px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--sub);
+    cursor: pointer;
+    border: none;
+    background: none;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav-tab:hover { color: var(--text); }
+
+  .nav-tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  .nav-tab .tab-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--sub);
+  }
+
+  .nav-tab.active .tab-dot { background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
+  .nav-tab.demo .tab-dot { background: var(--accent2); }
+
+  /* ---- PAGES ---- */
+  .page { display: none; }
+  .page.active { display: block; }
 
   .container {
     max-width: 1000px;
@@ -61,16 +110,12 @@
 
   .sun-icon {
     display: inline-block;
-    width: 60px;
-    height: 60px;
+    width: 60px; height: 60px;
     margin-bottom: 12px;
     animation: spin 10s linear infinite;
   }
 
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
   header h1 {
     font-family: 'Orbitron', monospace;
@@ -81,78 +126,9 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-shadow: none;
   }
 
-  header p {
-    color: var(--sub);
-    font-size: 0.85rem;
-    margin-top: 6px;
-    letter-spacing: 1px;
-  }
-
-  /* Connection config */
-  .config-box {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 24px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    align-items: flex-end;
-  }
-
-  .field {
-    flex: 1;
-    min-width: 180px;
-  }
-
-  label {
-    display: block;
-    font-size: 0.75rem;
-    color: var(--sub);
-    margin-bottom: 6px;
-    letter-spacing: 1px;
-  }
-
-  input, select {
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 14px;
-    color: var(--text);
-    font-family: 'Cairo', sans-serif;
-    font-size: 0.9rem;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  input:focus, select:focus {
-    border-color: var(--accent);
-  }
-
-  .connect-btn {
-    padding: 10px 28px;
-    background: linear-gradient(135deg, var(--accent), #d97706);
-    border: none;
-    border-radius: 8px;
-    color: #000;
-    font-family: 'Orbitron', monospace;
-    font-weight: 700;
-    font-size: 0.85rem;
-    cursor: pointer;
-    letter-spacing: 1px;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-
-  .connect-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 20px rgba(245,158,11,0.4);
-  }
+  header p { color: var(--sub); font-size: 0.85rem; margin-top: 6px; letter-spacing: 1px; }
 
   /* Status badge */
   .status-row {
@@ -160,11 +136,14 @@
     align-items: center;
     gap: 8px;
     margin-bottom: 24px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
   }
 
   .status-dot {
-    width: 10px;
-    height: 10px;
+    width: 10px; height: 10px;
     border-radius: 50%;
     background: var(--red);
     flex-shrink: 0;
@@ -176,12 +155,12 @@
     animation: pulse 2s infinite;
   }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
+  .status-dot.demo-mode { background: var(--accent2); box-shadow: 0 0 8px var(--accent2); }
 
-  .status-text { font-size: 0.85rem; color: var(--sub); }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+  .status-text { font-size: 0.85rem; color: var(--sub); flex: 1; }
+  .last-update { font-size: 0.75rem; color: var(--sub); }
 
   /* Main cards */
   .cards {
@@ -191,9 +170,7 @@
     margin-bottom: 24px;
   }
 
-  @media (max-width: 600px) {
-    .cards { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 600px) { .cards { grid-template-columns: 1fr; } }
 
   .card {
     background: var(--panel);
@@ -217,38 +194,14 @@
   .card.voltage::before { background: linear-gradient(90deg, var(--accent), #fcd34d); }
   .card.current::before { background: linear-gradient(90deg, var(--accent2), #93c5fd); }
 
-  .card-label {
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    color: var(--sub);
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
+  .card-label { font-size: 0.75rem; letter-spacing: 2px; color: var(--sub); text-transform: uppercase; margin-bottom: 8px; }
+  .card-icon { position: absolute; top: 20px; left: 20px; font-size: 1.8rem; opacity: 0.15; }
 
-  .card-icon {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size: 1.8rem;
-    opacity: 0.15;
-  }
-
-  .card-value {
-    font-family: 'Orbitron', monospace;
-    font-size: 3rem;
-    font-weight: 900;
-    line-height: 1;
-  }
-
+  .card-value { font-family: 'Orbitron', monospace; font-size: 3rem; font-weight: 900; line-height: 1; }
   .card.voltage .card-value { color: var(--accent); }
   .card.current .card-value { color: var(--accent2); }
 
-  .card-unit {
-    font-family: 'Orbitron', monospace;
-    font-size: 1rem;
-    color: var(--sub);
-    margin-top: 4px;
-  }
+  .card-unit { font-family: 'Orbitron', monospace; font-size: 1rem; color: var(--sub); margin-top: 4px; }
 
   .card-extra {
     margin-top: 14px;
@@ -261,6 +214,14 @@
   }
 
   .card-extra span { color: var(--text); font-weight: 600; }
+
+  /* Gauge */
+  .gauge { margin-top: 16px; }
+  .gauge-label { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--sub); margin-bottom: 6px; }
+  .gauge-track { height: 8px; background: var(--bg); border-radius: 4px; overflow: hidden; border: 1px solid var(--border); }
+  .gauge-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+  .gauge-fill.volt { background: linear-gradient(90deg, var(--accent), #fcd34d); }
+  .gauge-fill.amp { background: linear-gradient(90deg, var(--accent2), #93c5fd); }
 
   /* Power card */
   .power-card {
@@ -281,13 +242,7 @@
     background: radial-gradient(ellipse at center, rgba(245,158,11,0.06) 0%, transparent 70%);
   }
 
-  .power-label {
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    color: var(--sub);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
+  .power-label { font-size: 0.75rem; letter-spacing: 2px; color: var(--sub); text-transform: uppercase; margin-bottom: 6px; }
 
   .power-value {
     font-family: 'Orbitron', monospace;
@@ -298,36 +253,6 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-
-  /* Gauge bar */
-  .gauge {
-    margin-top: 16px;
-  }
-
-  .gauge-label {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.75rem;
-    color: var(--sub);
-    margin-bottom: 6px;
-  }
-
-  .gauge-track {
-    height: 8px;
-    background: var(--bg);
-    border-radius: 4px;
-    overflow: hidden;
-    border: 1px solid var(--border);
-  }
-
-  .gauge-fill {
-    height: 100%;
-    border-radius: 4px;
-    transition: width 0.5s ease;
-  }
-
-  .gauge-fill.volt { background: linear-gradient(90deg, var(--accent), #fcd34d); }
-  .gauge-fill.amp { background: linear-gradient(90deg, var(--accent2), #93c5fd); }
 
   /* Chart */
   .chart-box {
@@ -352,41 +277,89 @@
   .chart-legend { display: flex; gap: 16px; }
   .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--sub); }
   .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
-
   canvas { width: 100% !important; }
 
   /* Alert */
-  .alert {
-    padding: 12px 18px;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    margin-bottom: 16px;
-    display: none;
-    align-items: center;
-    gap: 10px;
-  }
-
+  .alert { padding: 12px 18px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 16px; display: none; align-items: center; gap: 10px; }
   .alert.show { display: flex; }
   .alert.warn { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); color: var(--accent); }
   .alert.err { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: var(--red); }
 
-  /* Demo mode toggle */
-  .demo-note {
-    text-align: center;
+  /* Firebase status info box */
+  .firebase-info {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    font-size: 0.8rem;
     color: var(--sub);
-    font-size: 0.78rem;
-    margin-top: 10px;
-    letter-spacing: 0.5px;
+    line-height: 1.8;
   }
 
-  .demo-note a {
-    color: var(--accent);
-    cursor: pointer;
-    text-decoration: none;
+  .firebase-info strong { color: var(--accent); }
+  .firebase-info code {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-family: monospace;
+    color: var(--green);
+    font-size: 0.75rem;
   }
+
+  /* Location 2 - demo note */
+  .demo-badge {
+    display: inline-block;
+    background: rgba(59,130,246,0.15);
+    border: 1px solid rgba(59,130,246,0.3);
+    color: var(--accent2);
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-top: 6px;
+  }
+
+  /* Stats row for location 2 */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 600px) { .stats-grid { grid-template-columns: 1fr 1fr; } }
+
+  .stat-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .stat-label { font-size: 0.7rem; color: var(--sub); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+  .stat-value { font-family: 'Orbitron', monospace; font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+  .stat-unit { font-size: 0.7rem; color: var(--sub); margin-top: 2px; }
 </style>
 </head>
 <body>
+
+<!-- Navigation -->
+<nav class="nav-tabs">
+  <button class="nav-tab active" onclick="showPage('page1')">
+    <div class="tab-dot" id="dot1"></div>
+    محطة طاقة شمسية 1
+  </button>
+  <button class="nav-tab demo" onclick="showPage('page2')">
+    <div class="tab-dot"></div>
+    محطة طاقة شمسية 2
+  </button>
+</nav>
+
+<!-- ===== PAGE 1: ESP32 via Firebase ===== -->
+<div class="page active" id="page1">
 <div class="container">
   <header>
     <svg class="sun-icon" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -403,67 +376,48 @@
       </g>
     </svg>
     <h1>SOLAR TRACKER</h1>
-    <p>نظام متابعة الطاقة الشمسية — ESP32</p>
+    <p>محطة طاقة شمسية 1 — متصلة عبر Firebase</p>
   </header>
-
-  <!-- Config -->
-  <div class="config-box">
-    <div class="field">
-      <label>عنوان ESP32 (IP)</label>
-      <input id="espIp" type="text" placeholder="192.168.1.100" value="192.168.1.100">
-    </div>
-    <div class="field">
-      <label>المسار (Endpoint)</label>
-      <input id="espPath" type="text" placeholder="/data" value="/data">
-    </div>
-    <div class="field">
-      <label>التحديث (ثانية)</label>
-      <input id="interval" type="number" min="1" max="60" value="2">
-    </div>
-    <button class="connect-btn" onclick="toggleConnect()">اتصال</button>
-  </div>
 
   <!-- Status -->
   <div class="status-row">
-    <div class="status-dot" id="statusDot"></div>
-    <span class="status-text" id="statusText">غير متصل — وضع العرض التجريبي نشط</span>
+    <div class="status-dot" id="statusDot1"></div>
+    <span class="status-text" id="statusText1">جاري الاتصال بـ Firebase...</span>
+    <span class="last-update" id="lastUpdate1"></span>
   </div>
 
   <!-- Alert -->
-  <div class="alert" id="alertBox">
-    <span id="alertIcon">⚠️</span>
-    <span id="alertMsg"></span>
-  </div>
+  <div class="alert" id="alertBox1"></div>
 
   <!-- Main cards -->
   <div class="cards">
     <div class="card voltage">
       <div class="card-icon">⚡</div>
       <div class="card-label">الجهد الكهربائي</div>
-      <div class="card-value" id="voltVal">--.-</div>
+      <div class="card-value" id="voltVal1">--.-</div>
       <div class="card-unit">Volt</div>
       <div class="gauge" style="margin-top:14px">
-        <div class="gauge-label"><span>0V</span><span id="voltMax">25V</span></div>
-        <div class="gauge-track"><div class="gauge-fill volt" id="voltBar" style="width:0%"></div></div>
+        <div class="gauge-label"><span>0V</span><span>25V</span></div>
+        <div class="gauge-track"><div class="gauge-fill volt" id="voltBar1" style="width:0%"></div></div>
       </div>
       <div class="card-extra">
-        <span>الحد الأدنى: <span id="voltMin">--</span>V</span>
-        <span>الحد الأقصى: <span id="voltMaxVal">--</span>V</span>
+        <span>الحد الأدنى: <span id="voltMin1">--</span>V</span>
+        <span>الحد الأقصى: <span id="voltMaxVal1">--</span>V</span>
       </div>
     </div>
 
     <div class="card current">
       <div class="card-icon">〜</div>
       <div class="card-label">التيار الكهربائي</div>
-      <div class="card-value" id="currVal">--.-</div>
+      <div class="card-value" id="currVal1">--.-</div>
       <div class="card-unit">Ampere</div>
       <div class="gauge" style="margin-top:14px">
-        <div class="gauge-label"><span>0A</span><span id="currMax">10A</span></div>
-        <div class="gauge-track"><div class="gauge-fill amp" id="currBar" style="width:0%"></div></div>
+        <div class="gauge-label"><span>0A</span><span>10A</span></div>
+        <div class="gauge-track"><div class="gauge-fill amp" id="currBar1" style="width:0%"></div></div>
       </div>
       <div class="card-extra">
-        <span>الحد الأدنى: <span id="currMin">--</span>A</span>
-        <span>الحد الأقصى: <span id="currMaxVal">--</span>A</span>
+        <span>الحد الأدنى: <span id="currMin1">--</span>A</span>
+        <span>الحد الأقصى: <span id="currMaxVal1">--</span>A</span>
       </div>
     </div>
   </div>
@@ -471,225 +425,338 @@
   <!-- Power card -->
   <div class="power-card">
     <div class="power-label">القدرة الكهربائية الكلية</div>
-    <div class="power-value" id="powerVal">--- W</div>
+    <div class="power-value" id="powerVal1">--- W</div>
     <div style="color:var(--sub);font-size:0.8rem;margin-top:4px">P = V × I</div>
   </div>
 
   <!-- Chart -->
   <div class="chart-box">
     <div class="chart-title">
-      <span>📈 سجل القراءات</span>
+      <span>📈 سجل القراءات — المحطة 1</span>
       <div class="chart-legend">
         <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>الجهد (V)</div>
         <div class="legend-item"><div class="legend-dot" style="background:var(--accent2)"></div>التيار (A)</div>
       </div>
     </div>
-    <canvas id="chart" height="160"></canvas>
+    <canvas id="chart1" height="160"></canvas>
+  </div>
+</div>
+</div>
+
+<!-- ===== PAGE 2: Demo Location ===== -->
+<div class="page" id="page2">
+<div class="container">
+  <header>
+    <svg class="sun-icon" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="30" cy="30" r="12" fill="#3b82f6"/>
+      <g stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round">
+        <line x1="30" y1="4" x2="30" y2="10"/>
+        <line x1="30" y1="50" x2="30" y2="56"/>
+        <line x1="4" y1="30" x2="10" y2="30"/>
+        <line x1="50" y1="30" x2="56" y2="30"/>
+        <line x1="11.51" y1="11.51" x2="15.75" y2="15.75"/>
+        <line x1="44.25" y1="44.25" x2="48.49" y2="48.49"/>
+        <line x1="48.49" y1="11.51" x2="44.25" y2="15.75"/>
+        <line x1="15.75" y1="44.25" x2="11.51" y2="48.49"/>
+      </g>
+    </svg>
+    <h1>SOLAR TRACKER</h1>
+    <p>محطة طاقة شمسية 2</p>
+    <div class="demo-badge">⚡ بيانات افتراضية</div>
+  </header>
+
+  <!-- Status -->
+  <div class="status-row">
+    <div class="status-dot demo-mode"></div>
+    <span class="status-text">محطة طاقة شمسية 2 — بيانات محاكاة</span>
+    <span class="last-update" id="lastUpdate2"></span>
   </div>
 
-  <div class="demo-note">
-    في وضع التجريبي، البيانات محاكاة. لربط ESP32 أدخل العنوان واضغط <strong>اتصال</strong>.<br>
-    يجب أن يُعيد ESP32 بيانات JSON بالشكل: <a>{"voltage": 18.5, "current": 2.3}</a>
+  <!-- Alert -->
+  <div class="alert" id="alertBox2"></div>
+
+  <!-- Stats summary -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">إجمالي الطاقة اليوم</div>
+      <div class="stat-value" id="totalEnergy2">0.0</div>
+      <div class="stat-unit">kWh</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">درجة الحرارة</div>
+      <div class="stat-value" id="tempVal2">--</div>
+      <div class="stat-unit">°C</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">كفاءة الألواح</div>
+      <div class="stat-value" id="effVal2">--</div>
+      <div class="stat-unit">%</div>
+    </div>
   </div>
+
+  <!-- Main cards -->
+  <div class="cards">
+    <div class="card voltage">
+      <div class="card-icon">⚡</div>
+      <div class="card-label">الجهد الكهربائي</div>
+      <div class="card-value" id="voltVal2">--.-</div>
+      <div class="card-unit">Volt</div>
+      <div class="gauge" style="margin-top:14px">
+        <div class="gauge-label"><span>0V</span><span>48V</span></div>
+        <div class="gauge-track"><div class="gauge-fill volt" id="voltBar2" style="width:0%"></div></div>
+      </div>
+      <div class="card-extra">
+        <span>الحد الأدنى: <span id="voltMin2">--</span>V</span>
+        <span>الحد الأقصى: <span id="voltMaxVal2">--</span>V</span>
+      </div>
+    </div>
+
+    <div class="card current">
+      <div class="card-icon">〜</div>
+      <div class="card-label">التيار الكهربائي</div>
+      <div class="card-value" id="currVal2">--.-</div>
+      <div class="card-unit">Ampere</div>
+      <div class="gauge" style="margin-top:14px">
+        <div class="gauge-label"><span>0A</span><span>20A</span></div>
+        <div class="gauge-track"><div class="gauge-fill amp" id="currBar2" style="width:0%"></div></div>
+      </div>
+      <div class="card-extra">
+        <span>الحد الأدنى: <span id="currMin2">--</span>A</span>
+        <span>الحد الأقصى: <span id="currMaxVal2">--</span>A</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Power card -->
+  <div class="power-card">
+    <div class="power-label">القدرة الكهربائية الكلية</div>
+    <div class="power-value" id="powerVal2">--- W</div>
+    <div style="color:var(--sub);font-size:0.8rem;margin-top:4px">P = V × I</div>
+  </div>
+
+  <!-- Chart -->
+  <div class="chart-box">
+    <div class="chart-title">
+      <span>📈 سجل القراءات — المحطة 2</span>
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>الجهد (V)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--accent2)"></div>التيار (A)</div>
+      </div>
+    </div>
+    <canvas id="chart2" height="160"></canvas>
+  </div>
+</div>
 </div>
 
 <script>
-// ---- Chart setup ----
-const canvas = document.getElementById('chart');
-const ctx = canvas.getContext('2d');
+// ============================================================
+// FIREBASE CONFIG
+// ============================================================
+const FIREBASE_URL = 'https://solar-tracker-14418-default-rtdb.europe-west1.firebasedatabase.app';
 
+// ============================================================
+// PAGE SWITCHING
+// ============================================================
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const idx = id === 'page1' ? 0 : 1;
+  document.querySelectorAll('.nav-tab')[idx].classList.add('active');
+  if (id === 'page1') drawChart(canvas1, hist1);
+  else drawChart(canvas2, hist2);
+}
+
+// ============================================================
+// CHART
+// ============================================================
+const canvas1 = document.getElementById('chart1');
+const canvas2 = document.getElementById('chart2');
+const ctx1 = canvas1.getContext('2d');
+const ctx2 = canvas2.getContext('2d');
 const MAX_POINTS = 60;
-const history = { time: [], voltage: [], current: [] };
+const hist1 = { voltage: [], current: [] };
+const hist2 = { voltage: [], current: [] };
 
-function drawChart() {
+function drawChart(canvas, hist) {
+  const ctx = canvas.getContext('2d');
   const W = canvas.offsetWidth;
   const H = canvas.offsetHeight || 160;
   canvas.width = W * devicePixelRatio;
   canvas.height = H * devicePixelRatio;
   ctx.scale(devicePixelRatio, devicePixelRatio);
-
   ctx.clearRect(0, 0, W, H);
-
-  if (history.voltage.length < 2) return;
+  if (hist.voltage.length < 2) return;
 
   const pad = { top: 10, right: 10, bottom: 20, left: 10 };
   const cw = W - pad.left - pad.right;
   const ch = H - pad.top - pad.bottom;
 
-  // Grid
   ctx.strokeStyle = 'rgba(255,255,255,0.04)';
   ctx.lineWidth = 1;
   for (let i = 0; i <= 4; i++) {
     const y = pad.top + (ch / 4) * i;
-    ctx.beginPath();
-    ctx.moveTo(pad.left, y);
-    ctx.lineTo(pad.left + cw, y);
-    ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + cw, y); ctx.stroke();
   }
 
-  const n = history.voltage.length;
+  const n = hist.voltage.length;
 
   function drawLine(data, color, maxVal) {
-    const grd = ctx.createLinearGradient(0, pad.top, 0, pad.top + ch);
-    grd.addColorStop(0, color.replace(')', ', 0.3)').replace('rgb', 'rgba'));
-    grd.addColorStop(1, color.replace(')', ', 0)').replace('rgb', 'rgba'));
-
     ctx.beginPath();
     for (let i = 0; i < n; i++) {
       const x = pad.left + (i / (MAX_POINTS - 1)) * cw;
       const y = pad.top + ch - (data[i] / maxVal) * ch;
       i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
     }
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 2;
-    ctx.stroke();
+    ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke();
 
-    // fill
-    ctx.lineTo(pad.left + ((n-1) / (MAX_POINTS - 1)) * cw, pad.top + ch);
-    ctx.lineTo(pad.left, pad.top + ch);
-    ctx.closePath();
-    ctx.fillStyle = grd;
-    ctx.fill();
+    const grd = ctx.createLinearGradient(0, pad.top, 0, pad.top + ch);
+    grd.addColorStop(0, color + '55'); grd.addColorStop(1, color + '00');
+    ctx.lineTo(pad.left + ((n-1)/(MAX_POINTS-1))*cw, pad.top+ch);
+    ctx.lineTo(pad.left, pad.top+ch); ctx.closePath();
+    ctx.fillStyle = grd; ctx.fill();
   }
 
-  const maxV = Math.max(25, ...history.voltage) * 1.1;
-  const maxA = Math.max(10, ...history.current) * 1.1;
-
-  // Normalize current to voltage scale for visual
-  const normalizedCurr = history.current.map(a => (a / maxA) * maxV);
-
-  drawLine(history.voltage, '#f59e0b', maxV);
-  drawLine(normalizedCurr, '#3b82f6', maxV);
+  const maxV = Math.max(25, ...hist.voltage) * 1.1;
+  const maxA = Math.max(10, ...hist.current) * 1.1;
+  const normCurr = hist.current.map(a => (a / maxA) * maxV);
+  drawLine(hist.voltage, '#f59e0b', maxV);
+  drawLine(normCurr, '#3b82f6', maxV);
 }
 
-// ---- Stats tracking ----
-let stats = { voltMin: Infinity, voltMax: -Infinity, currMin: Infinity, currMax: -Infinity };
-
-function updateDisplay(voltage, current) {
+// ============================================================
+// DISPLAY UPDATE
+// ============================================================
+function updateDisplay(suffix, voltage, current, hist) {
   const power = voltage * current;
+  document.getElementById('voltVal' + suffix).textContent = voltage.toFixed(1);
+  document.getElementById('currVal' + suffix).textContent = current.toFixed(2);
+  document.getElementById('powerVal' + suffix).textContent = power.toFixed(1) + ' W';
 
-  document.getElementById('voltVal').textContent = voltage.toFixed(1);
-  document.getElementById('currVal').textContent = current.toFixed(2);
-  document.getElementById('powerVal').textContent = power.toFixed(1) + ' W';
-
-  // Gauges
-  const voltMax = parseFloat(document.getElementById('voltMax').textContent);
-  const currMax = parseFloat(document.getElementById('currMax').textContent);
-  document.getElementById('voltBar').style.width = Math.min(100, (voltage / voltMax) * 100) + '%';
-  document.getElementById('currBar').style.width = Math.min(100, (current / currMax) * 100) + '%';
+  const voltMax = suffix === '1' ? 25 : 48;
+  const currMax = suffix === '1' ? 10 : 20;
+  document.getElementById('voltBar' + suffix).style.width = Math.min(100, (voltage / voltMax) * 100) + '%';
+  document.getElementById('currBar' + suffix).style.width = Math.min(100, (current / currMax) * 100) + '%';
 
   // Stats
-  stats.voltMin = Math.min(stats.voltMin, voltage);
-  stats.voltMax = Math.max(stats.voltMax, voltage);
-  stats.currMin = Math.min(stats.currMin, current);
-  stats.currMax = Math.max(stats.currMax, current);
-  document.getElementById('voltMin').textContent = stats.voltMin.toFixed(1);
-  document.getElementById('voltMaxVal').textContent = stats.voltMax.toFixed(1);
-  document.getElementById('currMin').textContent = stats.currMin.toFixed(2);
-  document.getElementById('currMaxVal').textContent = stats.currMax.toFixed(2);
+  const vMin = document.getElementById('voltMin' + suffix);
+  const vMax = document.getElementById('voltMaxVal' + suffix);
+  const cMin = document.getElementById('currMin' + suffix);
+  const cMax = document.getElementById('currMaxVal' + suffix);
+  if (vMin.textContent === '--' || parseFloat(vMin.textContent) > voltage) vMin.textContent = voltage.toFixed(1);
+  if (vMax.textContent === '--' || parseFloat(vMax.textContent) < voltage) vMax.textContent = voltage.toFixed(1);
+  if (cMin.textContent === '--' || parseFloat(cMin.textContent) > current) cMin.textContent = current.toFixed(2);
+  if (cMax.textContent === '--' || parseFloat(cMax.textContent) < current) cMax.textContent = current.toFixed(2);
 
-  // History
-  const now = new Date().toLocaleTimeString('ar-IQ');
-  history.time.push(now);
-  history.voltage.push(voltage);
-  history.current.push(current);
-  if (history.time.length > MAX_POINTS) {
-    history.time.shift(); history.voltage.shift(); history.current.shift();
-  }
+  hist.voltage.push(voltage); hist.current.push(current);
+  if (hist.voltage.length > MAX_POINTS) { hist.voltage.shift(); hist.current.shift(); }
 
-  drawChart();
+  const canvas = suffix === '1' ? canvas1 : canvas2;
+  drawChart(canvas, hist);
 
-  // Alerts
-  const alertBox = document.getElementById('alertBox');
-  if (voltage > 24) {
+  // Alert
+  const alertBox = document.getElementById('alertBox' + suffix);
+  if (voltage > (suffix === '1' ? 24 : 46)) {
     alertBox.className = 'alert show err';
-    document.getElementById('alertMsg').textContent = '⚠️ تحذير: الجهد مرتفع جداً! (' + voltage.toFixed(1) + 'V)';
-  } else if (current > 8) {
+    alertBox.textContent = '⚠️ تحذير: الجهد مرتفع جداً! (' + voltage.toFixed(1) + 'V)';
+  } else if (current > (suffix === '1' ? 8 : 16)) {
     alertBox.className = 'alert show warn';
-    document.getElementById('alertMsg').textContent = '⚡ تنبيه: التيار مرتفع (' + current.toFixed(2) + 'A)';
+    alertBox.textContent = '⚡ تنبيه: التيار مرتفع (' + current.toFixed(2) + 'A)';
   } else {
     alertBox.className = 'alert';
   }
 }
 
-// ---- Demo simulation ----
-let demoTimer = null;
-let demoPhase = 0;
+// ============================================================
+// FIREBASE - STATION 1
+// ============================================================
+let firebaseConnected = false;
 
-function startDemo() {
-  demoTimer = setInterval(() => {
-    demoPhase += 0.05;
-    // Simulate a solar tracker curve - rises and falls
-    const voltage = 12 + 8 * Math.abs(Math.sin(demoPhase * 0.3)) + (Math.random() - 0.5) * 0.5;
-    const current = 1 + 4 * Math.abs(Math.sin(demoPhase * 0.3)) + (Math.random() - 0.5) * 0.2;
-    updateDisplay(voltage, current);
+async function fetchFirebase() {
+  try {
+    const controller = new AbortController(); const timer = setTimeout(() => controller.abort(), 5000); const res = await fetch(FIREBASE_URL + '/station1.json', { signal: controller.signal }); clearTimeout(timer);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+
+    if (data && (data.voltage !== undefined || data.current !== undefined)) {
+      const voltage = parseFloat(data.voltage ?? data.volt ?? data.v ?? 0);
+      const current = parseFloat(data.current ?? data.curr ?? data.i ?? 0);
+
+      if (!firebaseConnected) {
+        firebaseConnected = true;
+        document.getElementById('statusDot1').classList.add('connected');
+        document.getElementById('dot1').style.background = '#10b981';
+        document.getElementById('dot1').style.boxShadow = '0 0 6px #10b981';
+      }
+
+      document.getElementById('statusText1').textContent = '🔥 متصل بـ Firebase — يستقبل بيانات ESP32';
+      document.getElementById('lastUpdate1').textContent = 'آخر تحديث: ' + new Date().toLocaleTimeString('ar-IQ');
+      updateDisplay('1', voltage, current, hist1);
+    } else {
+      // Firebase connected but no data yet — show demo
+      if (!firebaseConnected) {
+        document.getElementById('statusText1').textContent = '🔥 Firebase متصل — في انتظار بيانات ESP32...';
+        document.getElementById('statusDot1').style.background = '#f59e0b';
+        runDemo1();
+      }
+    }
+  } catch (e) {
+    firebaseConnected = false;
+    document.getElementById('statusDot1').classList.remove('connected');
+    document.getElementById('statusText1').textContent = '❌ تعذر الاتصال بـ Firebase — ' + e.message;
+  }
+}
+
+// Demo for station 1 while waiting for ESP32
+let demoPhase1 = 0;
+let demoRunning1 = false;
+function runDemo1() {
+  if (demoRunning1) return;
+  demoRunning1 = true;
+  const t = setInterval(() => {
+    if (firebaseConnected) { clearInterval(t); demoRunning1 = false; return; }
+    demoPhase1 += 0.05;
+    const v = 12 + 8 * Math.abs(Math.sin(demoPhase1 * 0.3)) + (Math.random()-0.5)*0.5;
+    const c = 1 + 4 * Math.abs(Math.sin(demoPhase1 * 0.3)) + (Math.random()-0.5)*0.2;
+    updateDisplay('1', v, c, hist1);
   }, 1000);
 }
 
-function stopDemo() {
-  clearInterval(demoTimer);
-  demoTimer = null;
-}
+// Poll Firebase every 2 seconds
+setInterval(fetchFirebase, 2000);
+fetchFirebase();
 
-// ---- Real ESP32 connection ----
-let fetchTimer = null;
-let isConnected = false;
+// ============================================================
+// STATION 2 — DEMO SIMULATION
+// ============================================================
+let demoPhase2 = 0;
+let totalEnergy2 = 0;
 
-async function fetchESP() {
-  const ip = document.getElementById('espIp').value.trim();
-  const path = document.getElementById('espPath').value.trim();
-  const url = 'http://' + ip + path;
+setInterval(() => {
+  demoPhase2 += 0.04;
+  const hour = new Date().getHours();
+  const solarFactor = Math.max(0, Math.sin(Math.PI * (hour - 6) / 12));
+  const voltage = 24 + 18 * solarFactor * Math.abs(Math.sin(demoPhase2 * 0.2)) + (Math.random()-0.5)*1.2;
+  const current = 2 + 12 * solarFactor * Math.abs(Math.sin(demoPhase2 * 0.25)) + (Math.random()-0.5)*0.5;
+  const power = voltage * current;
 
-  try {
-    const res = await fetch(url, { signal: AbortSignal.timeout(3000) });
-    const data = await res.json();
-    
-    const voltage = parseFloat(data.voltage ?? data.volt ?? data.v ?? 0);
-    const current = parseFloat(data.current ?? data.curr ?? data.i ?? data.ampere ?? 0);
+  totalEnergy2 += power / 3600000;
+  const temp = 28 + 15 * solarFactor + (Math.random()-0.5)*2;
+  const eff = Math.max(10, Math.min(98, 85 - (temp - 25) * 0.4 + (Math.random()-0.5)*3));
 
-    if (!isConnected) {
-      isConnected = true;
-      document.getElementById('statusDot').classList.add('connected');
-      document.getElementById('statusText').textContent = 'متصل بـ ESP32 على ' + ip;
-      stopDemo();
-    }
+  document.getElementById('totalEnergy2').textContent = totalEnergy2.toFixed(3);
+  document.getElementById('tempVal2').textContent = temp.toFixed(1);
+  document.getElementById('effVal2').textContent = eff.toFixed(1);
+  document.getElementById('lastUpdate2').textContent = 'آخر تحديث: ' + new Date().toLocaleTimeString('ar-IQ');
 
-    updateDisplay(voltage, current);
-  } catch (e) {
-    if (isConnected) {
-      isConnected = false;
-      document.getElementById('statusDot').classList.remove('connected');
-      document.getElementById('statusText').textContent = 'انقطع الاتصال — إعادة المحاولة...';
-      startDemo();
-    }
-  }
-}
+  updateDisplay('2', voltage, current, hist2);
+}, 1000);
 
-let fetchActive = false;
-
-function toggleConnect() {
-  const btn = document.querySelector('.connect-btn');
-  if (!fetchActive) {
-    fetchActive = true;
-    btn.textContent = 'قطع الاتصال';
-    stopDemo();
-    const sec = parseInt(document.getElementById('interval').value) * 1000 || 2000;
-    fetchESP();
-    fetchTimer = setInterval(fetchESP, sec);
-  } else {
-    fetchActive = false;
-    isConnected = false;
-    clearInterval(fetchTimer);
-    btn.textContent = 'اتصال';
-    document.getElementById('statusDot').classList.remove('connected');
-    document.getElementById('statusText').textContent = 'غير متصل — وضع العرض التجريبي نشط';
-    startDemo();
-  }
-}
-
-// ---- Init ----
-startDemo();
-window.addEventListener('resize', drawChart);
+window.addEventListener('resize', () => {
+  drawChart(canvas1, hist1);
+  drawChart(canvas2, hist2);
+});
 </script>
+
 </body>
 </html>
